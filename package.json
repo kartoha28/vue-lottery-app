@@ -14,8 +14,13 @@
     "lint:eslint": "eslint . --fix --cache"
   },
   "dependencies": {
+    "@vee-validate/yup": "^4.15.1",
     "bootstrap": "^5.3.8",
-    "vue": "^3.5.42"
+    "pinia": "^4.1.0",
+    "vee-validate": "^4.15.1",
+    "vue": "^3.5.42",
+    "vue-router": "^5.4.0",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.5",
@@ -26,6 +31,7 @@
     "eslint": "^10.10.0",
     "eslint-plugin-oxlint": "~1.82.0",
     "eslint-plugin-vue": "~10.11.0",
+    "gh-pages": "^6.3.0",
     "jiti": "^2.7.0",
     "npm-run-all2": "^9.0.3",
     "oxlint": "~1.82.0",
