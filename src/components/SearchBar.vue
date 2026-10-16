@@ -1,12 +1,30 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watch } from 'vue'
 
+const props = withDefaults(
+  defineProps<{
+    initialQuery?: string
+  }>(),
+  {
+    initialQuery: '',
+  },
+)
+
 const emit = defineEmits<{
   (e: 'filter-by-name', query: string): void
 }>()
 
-const searchQuery = ref('')
+const searchQuery = ref(props.initialQuery)
 let timer: ReturnType<typeof setTimeout> | null = null
+
+watch(
+  () => props.initialQuery,
+  (val) => {
+    if (val !== searchQuery.value) {
+      searchQuery.value = val
+    }
+  },
+)
 
 // Передача події filter-by-name за допомогою watch з debounce 300 мс
 watch(searchQuery, (newVal) => {
@@ -33,8 +51,8 @@ onUnmounted(() => {
         v-model="searchQuery"
         type="text"
         class="form-control search-input"
-        placeholder="Пошук учасників за іменем..."
-        aria-label="Пошук учасників за іменем"
+        placeholder="Пошук користувачів за іменем..."
+        aria-label="Пошук користувачів за іменем"
       />
       <button
         v-if="searchQuery"

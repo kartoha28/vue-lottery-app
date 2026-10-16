@@ -121,7 +121,7 @@ export const useUsersStore = defineStore('users', () => {
       }
 
       updatedUsersMap.value[id] = {
-        ...(updatedUsersMap.value[id] || {}),
+        ...updatedUsersMap.value[id],
         ...dto,
       }
 
