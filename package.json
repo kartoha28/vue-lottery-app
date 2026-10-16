@@ -11,7 +11,9 @@
     "type-check": "vue-tsc --build",
     "lint": "run-s \"lint:*\"",
     "lint:oxlint": "oxlint . --fix",
-    "lint:eslint": "eslint . --fix --cache"
+    "lint:eslint": "eslint . --fix --cache",
+    "postbuild": "node -e \"import('node:fs').then(fs => fs.copyFileSync('dist/index.html', 'dist/404.html'))\"",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "@vee-validate/yup": "^4.15.1",
