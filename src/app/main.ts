@@ -6,6 +6,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import { router } from './providers/router'
 import { registerServices } from './providers/services'
+import { setupUI } from './providers/ui'
 
 registerServices()
 
@@ -15,5 +16,6 @@ pinia.use(piniaPluginPersistedstate)
 
 app.use(pinia)
 app.use(router)
+setupUI(app)
 
 app.mount('#app')

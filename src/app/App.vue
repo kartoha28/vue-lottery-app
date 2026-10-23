@@ -5,6 +5,7 @@ import AuthLayout from './layouts/AuthLayout.vue'
 import DefaultLayout from './layouts/DefaultLayout.vue'
 import { useSessionStore } from '@/entities/session'
 import { useThemeStore } from '@/entities/theme'
+import { AppConfirmDialog, AppToast } from '@/shared/ui'
 
 const route = useRoute()
 const sessionStore = useSessionStore()
@@ -23,6 +24,8 @@ onMounted(() => {
 </script>
 
 <template>
+  <AppToast />
+  <AppConfirmDialog />
   <component :is="currentLayout">
     <RouterView />
   </component>
