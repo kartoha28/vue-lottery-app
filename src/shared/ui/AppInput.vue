@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InputText from 'primevue/inputtext'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     modelValue?: string | number
     label?: string

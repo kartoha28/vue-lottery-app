@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useSessionStore } from '@/entities/session'
 import { LogoutButton } from '@/features/auth'
 
-const authStore = useSessionStore()
+const sessionStore = useSessionStore()
+const { isAuthenticated, user } = storeToRefs(sessionStore)
 </script>
 
 <template>
@@ -18,9 +20,9 @@ const authStore = useSessionStore()
       Users
     </RouterLink>
 
-    <template v-if="authStore.isAuthenticated">
-      <span v-if="authStore.user" class="user-badge">
-        {{ authStore.user.firstName }} {{ authStore.user.lastName }}
+    <template v-if="isAuthenticated">
+      <span v-if="user" class="user-badge">
+        {{ user.firstName }} {{ user.lastName }}
       </span>
       <LogoutButton />
     </template>

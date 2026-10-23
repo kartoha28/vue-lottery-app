@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUsersStore } from '@/entities/user'
 import { UserForm } from '@/features/user-form'
+import { useAppToast } from '@/shared/ui'
 import type { CreateUserDto, User } from '@/entities/user'
 
 const props = defineProps<{
@@ -11,6 +12,7 @@ const props = defineProps<{
 
 const usersStore = useUsersStore()
 const router = useRouter()
+const toast = useAppToast()
 const user = ref<User | null>(null)
 
 onMounted(async () => {
@@ -25,8 +27,13 @@ onMounted(async () => {
 
 const handleUpdate = async (dto: CreateUserDto): Promise<void> => {
   const numericId = Number(props.id)
-  await usersStore.updateUser(numericId, dto)
-  await router.push(`/users/${numericId}`)
+  try {
+    await usersStore.updateUser(numericId, dto)
+    toast.success('Дані оновлено успішно', `${dto.firstName} ${dto.lastName}`)
+    await router.push(`/users/${numericId}`)
+  } catch (e) {
+    toast.error('Помилка оновлення', (e as Error).message)
+  }
 }
 
 const handleCancel = async (): Promise<void> => {

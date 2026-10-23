@@ -39,4 +39,69 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   padding: 2rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+// Dark theme overrides
+html.app-dark-theme {
+  body {
+    background-color: #121212;
+    color: #e0e0e0;
+  }
+
+  .content-card {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    border: 1px solid #2e2e2e;
+  }
+
+  .app-header {
+    background-color: #1e1e1e !important;
+    border-bottom-color: #2e2e2e !important;
+  }
+
+  .nav-link-item {
+    color: #adb5bd !important;
+
+    &:hover {
+      background-color: #2a2a2a !important;
+      color: #6ea8fe !important;
+    }
+
+    &.is-active {
+      background-color: #1a2a40 !important;
+      color: #6ea8fe !important;
+    }
+  }
+
+  .users-table {
+    color: #e0e0e0;
+
+    thead th {
+      background-color: #252525;
+      color: #e0e0e0;
+      border-bottom-color: #383838;
+    }
+
+    tbody td {
+      border-bottom-color: #2e2e2e;
+    }
+  }
+
+  .login-card {
+    background-color: #1e1e1e !important;
+    border-color: #2e2e2e !important;
+    color: #e0e0e0 !important;
+  }
+
+  .tech-item {
+    background-color: #252525 !important;
+    border-color: #383838 !important;
+    color: #e0e0e0 !important;
+  }
+
+  .page-title, .section-title, .login-title {
+    color: #f8f9fa !important;
+  }
 }

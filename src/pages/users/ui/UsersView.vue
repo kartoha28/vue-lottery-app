@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/entities/user'
-import { AppButton, AppModal } from '@/shared/ui'
+import { AppButton, AppModal, useAppConfirm, useAppToast } from '@/shared/ui'
 import { SearchBar } from '@/features/user-search'
 import { UserForm } from '@/features/user-form'
 import { WinnersBlock } from '@/entities/lottery'
@@ -10,8 +11,13 @@ import type { Winner } from '@/entities/lottery/model/types'
 import type { CreateUserDto, User } from '@/entities/user'
 
 const usersStore = useUsersStore()
+const { users, total, isLoading, error } = storeToRefs(usersStore)
+const { fetchUsers, createUser, removeUser } = usersStore
+
 const route = useRoute()
 const router = useRouter()
+const toast = useAppToast()
+const confirm = useAppConfirm()
 
 const LIMIT = 10
 
@@ -29,7 +35,7 @@ const currentSearch = computed(() => {
 })
 
 const totalPages = computed(() => {
-  return Math.max(1, Math.ceil(usersStore.total / LIMIT))
+  return Math.max(1, Math.ceil(total.value / LIMIT))
 })
 
 // Завантаження даних при зміні page або q в URL
@@ -37,7 +43,7 @@ watch(
   () => [currentPage.value, currentSearch.value] as const,
   async ([page, q]) => {
     const skip = (page - 1) * LIMIT
-    await usersStore.fetchUsers({ limit: LIMIT, skip, q })
+    await fetchUsers({ limit: LIMIT, skip, q })
   },
   { immediate: true },
 )
@@ -67,7 +73,7 @@ const goToPage = async (page: number): Promise<void> => {
 // Лотерея серед завантажених користувачів
 const eligibleUsers = computed(() => {
   const winnerIds = new Set(winners.value.map((w) => w.id))
-  return usersStore.users.filter((u) => !winnerIds.has(String(u.id)))
+  return users.value.filter((u) => !winnerIds.has(String(u.id)))
 })
 
 const canPickWinner = computed(() => {
@@ -85,6 +91,7 @@ const handlePickWinner = (): void => {
       name: `${selected.firstName} ${selected.lastName}`,
       email: selected.email,
     })
+    toast.success('Обрано переможця!', `${selected.firstName} ${selected.lastName}`)
   }
 }
 
@@ -96,30 +103,30 @@ const handleRemoveWinner = (id: string): void => {
 const isCreateModalOpen = ref(false)
 
 const handleCreateUser = async (dto: CreateUserDto): Promise<void> => {
-  await usersStore.createUser(dto)
-  isCreateModalOpen.value = false
+  try {
+    await createUser(dto)
+    toast.success('Користувача створено успішно', `${dto.firstName} ${dto.lastName}`)
+    isCreateModalOpen.value = false
+  } catch (e) {
+    toast.error('Помилка створення користувача', (e as Error).message)
+  }
 }
 
-// Видалення користувача
-const isDeleteModalOpen = ref(false)
-const userToDelete = ref<User | null>(null)
-
+// Видалення користувача через AppConfirmDialog
 const openDeleteModal = (user: User): void => {
-  userToDelete.value = user
-  isDeleteModalOpen.value = true
-}
-
-const closeDeleteModal = (): void => {
-  isDeleteModalOpen.value = false
-  userToDelete.value = null
-}
-
-const confirmDeleteUser = async (): Promise<void> => {
-  if (!userToDelete.value) return
-  const id = userToDelete.value.id
-  await usersStore.deleteUser(id)
-  winners.value = winners.value.filter((w) => w.id !== String(id))
-  closeDeleteModal()
+  confirm.require({
+    header: 'Підтвердження видалення',
+    message: `Ви дійсно бажаєте видалити користувача ${user.firstName} ${user.lastName}?`,
+    accept: async () => {
+      try {
+        await removeUser(user.id)
+        winners.value = winners.value.filter((w) => w.id !== String(user.id))
+        toast.success('Користувача видалено успішно', `${user.firstName} ${user.lastName}`)
+      } catch (e) {
+        toast.error('Помилка видалення', (e as Error).message)
+      }
+    },
+  })
 }
 </script>
 
@@ -138,7 +145,7 @@ const confirmDeleteUser = async (): Promise<void> => {
       <div>
         <h1 class="section-title">Список учасників (DummyJSON Users)</h1>
         <p class="section-subtitle">
-          Всього знайдено: <strong>{{ usersStore.total }}</strong> | Сторінка
+          Всього знайдено: <strong>{{ total }}</strong> | Сторінка
           <strong>{{ currentPage }}</strong> з <strong>{{ totalPages }}</strong>
         </p>
       </div>
@@ -151,12 +158,12 @@ const confirmDeleteUser = async (): Promise<void> => {
     <SearchBar :initial-query="currentSearch" @filter-by-name="handleFilterByName" />
 
     <!-- Помилка запиту до API -->
-    <div v-if="usersStore.error" class="alert alert-danger" role="alert">
-      {{ usersStore.error }}
+    <div v-if="error" class="alert alert-danger" role="alert">
+      {{ error }}
     </div>
 
     <!-- Стан завантаження -->
-    <div v-if="usersStore.isLoading" class="loading-box text-center py-5">
+    <div v-if="isLoading" class="loading-box text-center py-5">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Завантаження...</span>
       </div>
@@ -178,12 +185,12 @@ const confirmDeleteUser = async (): Promise<void> => {
           </tr>
         </thead>
         <tbody>
-          <tr v-if="usersStore.users.length === 0">
+          <tr v-if="users.length === 0">
             <td colspan="7" class="text-center py-4 text-muted">
               Користувачів за вашим запитом не знайдено
             </td>
           </tr>
-          <tr v-for="u in usersStore.users" :key="u.id">
+          <tr v-for="u in users" :key="u.id">
             <td class="text-muted">#{{ u.id }}</td>
             <td>
               <RouterLink :to="`/users/${u.id}`" class="user-name-link">
@@ -268,38 +275,10 @@ const confirmDeleteUser = async (): Promise<void> => {
       <template #body>
         <UserForm
           submit-label="Створити користувача"
-          :is-submitting="usersStore.isLoading"
+          :is-submitting="isLoading"
           @submit="handleCreateUser"
           @cancel="isCreateModalOpen = false"
         />
-      </template>
-    </AppModal>
-
-    <!-- Модальне вікно підтвердження видалення -->
-    <AppModal
-      :is-open="isDeleteModalOpen"
-      title="Підтвердження видалення"
-      @close="closeDeleteModal"
-    >
-      <template #body>
-        <p v-if="userToDelete" class="mb-0">
-          Ви дійсно бажаєте видалити користувача
-          <strong>"{{ userToDelete.firstName }} {{ userToDelete.lastName }}"</strong>
-          ({{ userToDelete.email }})?
-        </p>
-      </template>
-      <template #footer>
-        <AppButton variant="secondary" size="sm" @click="closeDeleteModal">
-          Ні
-        </AppButton>
-        <AppButton
-          variant="danger"
-          size="sm"
-          :disabled="usersStore.isLoading"
-          @click="confirmDeleteUser"
-        >
-          Так
-        </AppButton>
       </template>
     </AppModal>
   </section>

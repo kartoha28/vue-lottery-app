@@ -9,6 +9,7 @@ const props = defineProps<{
 }>()
 
 const usersStore = useUsersStore()
+const { getUserById } = usersStore
 const route = useRoute()
 const user = ref<User | null>(null)
 
@@ -16,7 +17,7 @@ const loadUser = async (): Promise<void> => {
   const numericId = Number(props.id)
   if (!Number.isFinite(numericId)) return
   try {
-    user.value = await usersStore.getUserById(numericId)
+    user.value = await getUserById(numericId)
   } catch {
     user.value = null
   }

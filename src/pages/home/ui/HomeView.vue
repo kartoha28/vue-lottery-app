@@ -2,15 +2,20 @@
 import { RouterLink } from 'vue-router'
 
 const technologies = [
+  'Feature-Sliced Design (FSD Architecture)',
   'Vue 3 (Composition API, <script setup>)',
   'TypeScript',
   'Vue Router 4 (Dynamic & Nested Routes, Navigation Guards)',
-  'Pinia (State Management)',
-  'Repository Pattern (ServiceProvider, UserService, AuthService)',
+  'Pinia (State Management, Setup Stores, PersistedState)',
+  'Repository Pattern (Decoupled ServiceProvider in FSD shared/api)',
+  'PrimeVue UI Library (Tree-shaking, Aura theme, shared/ui wrappers)',
+  'Toast & ConfirmDialog Notifications',
+  'Dark / Light Theme Toggle',
   'VeeValidate 4 + Yup (Form Validation)',
   'JWT Authentication (Access & Refresh Token Interceptor)',
   'SCSS + Bootstrap 5',
   'DummyJSON REST API',
+  'Steiger (FSD Architectural Linter)',
 ]
 </script>
 

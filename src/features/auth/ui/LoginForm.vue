@@ -3,13 +3,14 @@ import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/yup'
 import * as yup from 'yup'
 import { useSessionStore } from '@/entities/session'
-import { AppButton, AppInput } from '@/shared/ui'
+import { AppButton, AppInput, useAppToast } from '@/shared/ui'
 
 const emit = defineEmits<{
   (e: 'success'): void
 }>()
 
 const authStore = useSessionStore()
+const toast = useAppToast()
 
 const loginSchema = toTypedSchema(
   yup.object({
@@ -35,9 +36,10 @@ const { value: password, errorMessage: passwordError } = useField<string>('passw
 const onSubmit = handleSubmit(async (values) => {
   try {
     await authStore.login({ username: values.username, password: values.password })
+    toast.success('Успішний вхід', `Ласкаво просимо, ${authStore.user?.firstName || values.username}!`)
     emit('success')
-  } catch {
-    // authStore.error holds message
+  } catch (e) {
+    toast.error('Помилка авторизації', (e as Error).message || 'Перевірте логін та пароль')
   }
 })
 
