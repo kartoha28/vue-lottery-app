@@ -137,4 +137,21 @@ const fillDemo = (user: string, pass: string): void => {
 .form-actions {
   margin-top: 1.5rem;
 }
+
+:global(html.app-dark-theme) {
+  .hint-label {
+    color: #adb5bd;
+  }
+
+  .demo-chip {
+    background-color: #2a2a2a;
+    border-color: #3e3e3e;
+    color: #e0e0e0;
+
+    &:hover {
+      background-color: #383838;
+      border-color: #4e4e4e;
+    }
+  }
+}
 </style>

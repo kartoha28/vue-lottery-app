@@ -89,4 +89,25 @@ const onInput = (event: Event): void => {
   font-size: 0.825rem;
   margin-top: 0.35rem;
 }
+
+:global(html.app-dark-theme) {
+  .form-label {
+    color: #e0e0e0;
+  }
+
+  .app-input-field {
+    background-color: #252525;
+    color: #e0e0e0;
+    border-color: #3e3e3e;
+
+    &:focus {
+      border-color: #6ea8fe;
+      box-shadow: 0 0 0 0.2rem rgba(110, 168, 254, 0.25);
+    }
+
+    &::placeholder {
+      color: #6c757d;
+    }
+  }
+}
 </style>

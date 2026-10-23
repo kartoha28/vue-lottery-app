@@ -177,4 +177,38 @@ onUnmounted(() => {
     transform: scale(0.95);
   }
 }
+
+:global(html.app-dark-theme) {
+  .modal-content-custom {
+    background-color: #1e1e1e;
+    border-color: #2e2e2e;
+    color: #e0e0e0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-header-custom {
+    border-bottom-color: #2e2e2e;
+  }
+
+  .modal-title-custom {
+    color: #f8f9fa;
+  }
+
+  .btn-close-custom {
+    color: #adb5bd;
+
+    &:hover {
+      color: #f8f9fa;
+    }
+  }
+
+  .modal-body-custom {
+    color: #e0e0e0;
+  }
+
+  .modal-footer-custom {
+    background-color: #252525;
+    border-top-color: #2e2e2e;
+  }
+}
 </style>

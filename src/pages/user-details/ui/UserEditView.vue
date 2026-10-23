@@ -71,4 +71,15 @@ const handleCancel = async (): Promise<void> => {
   margin-bottom: 1.25rem;
   color: #212529;
 }
+
+:global(html.app-dark-theme) {
+  .edit-user-panel {
+    background-color: #252525;
+    border-color: #383838;
+  }
+
+  .edit-title {
+    color: #f8f9fa;
+  }
+}
 </style>

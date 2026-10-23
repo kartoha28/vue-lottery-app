@@ -86,4 +86,33 @@ const handleSuccess = async (): Promise<void> => {
     text-decoration: underline;
   }
 }
+
+:global(html.app-dark-theme) {
+  .login-card {
+    background-color: #1e1e1e;
+    border-color: #2e2e2e;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    color: #e0e0e0;
+  }
+
+  .login-title {
+    color: #f8f9fa;
+  }
+
+  .login-subtitle {
+    color: #adb5bd;
+  }
+
+  .back-link-wrapper {
+    border-top-color: #2e2e2e;
+  }
+
+  .back-link {
+    color: #6ea8fe;
+
+    &:hover {
+      color: #9ec5fe;
+    }
+  }
+}
 </style>

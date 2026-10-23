@@ -30,6 +30,11 @@ import { RouterLink } from 'vue-router'
 }
 
 .logo-text {
-  color: #212529;
+  color: var(--logo-text-color, #212529);
+  transition: color 0.2s ease;
+}
+
+:global(html.app-dark-theme) .logo-text {
+  color: #f8f9fa;
 }
 </style>

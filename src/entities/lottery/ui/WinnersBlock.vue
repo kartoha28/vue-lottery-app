@@ -86,4 +86,19 @@ const emit = defineEmits<{
   font-weight: 500;
   padding: 0.5rem 1.15rem;
 }
+
+:global(html.app-dark-theme) {
+  .winners-display {
+    background-color: #252525;
+    border-color: #383838;
+  }
+
+  .winners-placeholder {
+    color: #6c757d;
+  }
+
+  .winners-label {
+    color: #adb5bd;
+  }
+}
 </style>

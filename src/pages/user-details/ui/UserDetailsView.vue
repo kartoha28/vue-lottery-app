@@ -177,4 +177,33 @@ watch(
   font-weight: 500;
   color: #212529;
 }
+
+:global(html.app-dark-theme) {
+  .user-details-view {
+    .profile-name {
+      color: #f8f9fa;
+    }
+
+    .profile-username {
+      color: #adb5bd;
+    }
+
+    .profile-header {
+      border-bottom-color: #2e2e2e;
+    }
+
+    .info-item {
+      background-color: #252525;
+      border-color: #383838;
+    }
+
+    .info-label {
+      color: #adb5bd;
+    }
+
+    .info-value {
+      color: #e0e0e0;
+    }
+  }
+}
 </style>

@@ -91,6 +91,7 @@ const skills = [
 .author-links {
   margin: 0;
   font-size: 0.95rem;
+  color: #495057;
 }
 
 .github-link {
@@ -124,5 +125,38 @@ const skills = [
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+:global(html.app-dark-theme) {
+  .about-view {
+    .page-title,
+    .author-name {
+      color: #f8f9fa;
+    }
+
+    .author-role,
+    .author-links {
+      color: #adb5bd;
+    }
+
+    .author-profile {
+      border-bottom-color: #2e2e2e;
+    }
+
+    .github-link {
+      color: #6ea8fe;
+    }
+
+    .skills-title {
+      color: #e0e0e0;
+    }
+
+    .skill-badge {
+      background-color: #1a2a40;
+      color: #9ec5fe;
+      border-color: #2b4c7e;
+    }
+  }
 }
 </style>

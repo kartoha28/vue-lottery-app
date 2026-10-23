@@ -95,4 +95,37 @@ onUnmounted(() => {
   line-height: 1;
   padding: 0 0.75rem;
 }
+
+:global(html.app-dark-theme) {
+  .search-icon {
+    background-color: #252525;
+    border-color: #383838;
+    color: #adb5bd;
+  }
+
+  .search-input {
+    background-color: #252525;
+    border-color: #383838;
+    color: #e0e0e0;
+
+    &:focus {
+      border-color: #6ea8fe;
+      box-shadow: 0 0 0 0.2rem rgba(110, 168, 254, 0.25);
+    }
+
+    &::placeholder {
+      color: #6c757d;
+    }
+  }
+
+  .clear-btn {
+    border-color: #383838;
+    color: #adb5bd;
+
+    &:hover {
+      background-color: #333333;
+      color: #ffffff;
+    }
+  }
+}
 </style>
