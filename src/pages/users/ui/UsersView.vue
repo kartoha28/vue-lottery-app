@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useUsersStore } from '@/entities/user'
 import { AppButton, AppModal, useAppConfirm, useAppToast } from '@/shared/ui'
 import { SearchBar } from '@/features/user-search'
 import { UserForm } from '@/features/user-form'
+import { UsersTable } from '@/widgets/users-table'
 import { WinnersBlock } from '@/entities/lottery'
-import type { Winner } from '@/entities/lottery/model/types'
+import type { Winner } from '@/entities/lottery'
 import type { CreateUserDto, User } from '@/entities/user'
 
 const usersStore = useUsersStore()
@@ -157,78 +158,13 @@ const openDeleteModal = (user: User): void => {
     <!-- Поле пошуку (синхронізоване з ?q=...) -->
     <SearchBar :initial-query="currentSearch" @filter-by-name="handleFilterByName" />
 
-    <!-- Помилка запиту до API -->
-    <div v-if="error" class="alert alert-danger" role="alert">
-      {{ error }}
-    </div>
-
-    <!-- Стан завантаження -->
-    <div v-if="isLoading" class="loading-box text-center py-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Завантаження...</span>
-      </div>
-      <p class="mt-2 text-muted mb-0">Завантаження списку користувачів...</p>
-    </div>
-
-    <!-- Таблиця користувачів -->
-    <div v-else class="table-responsive">
-      <table class="table users-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Користувач</th>
-            <th>Username</th>
-            <th>Вік / Стать</th>
-            <th>Email</th>
-            <th>Телефон</th>
-            <th class="text-end">Дії</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="users.length === 0">
-            <td colspan="7" class="text-center py-4 text-muted">
-              Користувачів за вашим запитом не знайдено
-            </td>
-          </tr>
-          <tr v-for="u in users" :key="u.id">
-            <td class="text-muted">#{{ u.id }}</td>
-            <td>
-              <RouterLink :to="`/users/${u.id}`" class="user-name-link">
-                {{ u.firstName }} {{ u.lastName }}
-              </RouterLink>
-            </td>
-            <td>
-              <code>@{{ u.username }}</code>
-            </td>
-            <td>{{ u.age }} р. ({{ u.gender }})</td>
-            <td>{{ u.email }}</td>
-            <td>{{ u.phone }}</td>
-            <td class="text-end actions-cell">
-              <RouterLink
-                :to="`/users/${u.id}`"
-                class="btn btn-sm btn-outline-secondary action-btn"
-              >
-                Деталі
-              </RouterLink>
-              <RouterLink
-                :to="`/users/${u.id}/edit`"
-                class="btn btn-sm btn-outline-primary action-btn"
-              >
-                Редагувати
-              </RouterLink>
-              <AppButton
-                size="sm"
-                variant="outline-danger"
-                class="action-btn"
-                @click="openDeleteModal(u)"
-              >
-                Видалити
-              </AppButton>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <!-- Таблиця користувачів (Widget) -->
+    <UsersTable
+      :users="users"
+      :is-loading="isLoading"
+      :error="error"
+      @delete="openDeleteModal"
+    />
 
     <!-- Пагінація (limit / skip, синхронізована з ?page=...) -->
     <nav v-if="totalPages > 1" aria-label="Users pagination" class="pagination-bar">
