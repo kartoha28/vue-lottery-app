@@ -6,3 +6,4 @@ export type {
   RefreshTokenResponse,
 } from './model/types'
 export { AuthService } from './api/auth.service'
+export { useSessionStore, useAuthStore } from './model/session.store'

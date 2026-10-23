@@ -2,14 +2,14 @@
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/yup'
 import * as yup from 'yup'
-import { useAuthStore } from '@/stores/auth.store'
+import { useSessionStore } from '@/entities/session'
 import { AppButton, AppInput } from '@/shared/ui'
 
 const emit = defineEmits<{
   (e: 'success'): void
 }>()
 
-const authStore = useAuthStore()
+const authStore = useSessionStore()
 
 const loginSchema = toTypedSchema(
   yup.object({

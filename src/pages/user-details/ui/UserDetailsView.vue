@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
-import { useUsersStore } from '@/stores/users.store'
+import { useUsersStore } from '@/entities/user'
 import type { User } from '@/entities/user'
 
 const props = defineProps<{

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUsersStore } from '@/stores/users.store'
+import { useUsersStore } from '@/entities/user'
 import { UserForm } from '@/features/user-form'
 import type { CreateUserDto, User } from '@/entities/user'
 

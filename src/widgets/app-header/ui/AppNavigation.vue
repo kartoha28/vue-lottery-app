@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
-import { useAuthStore } from '@/stores/auth.store'
+import { useSessionStore } from '@/entities/session'
 import { LogoutButton } from '@/features/auth'
 
-const authStore = useAuthStore()
+const authStore = useSessionStore()
 </script>
 
 <template>

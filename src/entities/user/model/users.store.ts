@@ -1,8 +1,8 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { ServiceProvider } from '@/shared/api'
-import type { UserService } from '@/entities/user'
-import type { CreateUserDto, UpdateUserDto, User } from '@/entities/user'
+import type { UserService } from '../api/user.service'
+import type { CreateUserDto, UpdateUserDto, User } from './types'
 
 export const useUsersStore = defineStore('users', () => {
   const users = ref<User[]>([])
@@ -10,29 +10,45 @@ export const useUsersStore = defineStore('users', () => {
   const isLoading = ref(false)
   const error = ref<string | null>(null)
 
-  // Локальний кеш для імітованих операцій POST, PUT, DELETE на DummyJSON
+  const hasUsers = computed(() => users.value.length > 0)
+
+  // Локальний стан для імітованих операцій POST, PUT, DELETE на DummyJSON
   const createdUsers = ref<User[]>([])
   const updatedUsersMap = ref<Record<number, UpdateUserDto>>({})
   const deletedUserIds = ref<Set<number>>(new Set())
 
   let nextLocalId = 1000
+  const service = () => ServiceProvider.get<UserService>('users')
 
   function applyLocalStateToUser(user: User): User {
     const updates = updatedUsersMap.value[user.id]
     return updates ? { ...user, ...updates } : user
   }
 
-  async function fetchUsers({
-    limit = 10,
-    skip = 0,
-    q = '',
-  }: { limit?: number; skip?: number; q?: string } = {}): Promise<void> {
+  async function fetchUsers(
+    paramsOrLimit: { limit?: number; skip?: number; q?: string } | number = 10,
+    skipParam = 0,
+    qParam = '',
+  ): Promise<void> {
+    let limit = 10
+    let skip = 0
+    let q = ''
+
+    if (typeof paramsOrLimit === 'object') {
+      limit = paramsOrLimit.limit ?? 10
+      skip = paramsOrLimit.skip ?? 0
+      q = paramsOrLimit.q ?? ''
+    } else {
+      limit = paramsOrLimit
+      skip = skipParam
+      q = qParam
+    }
+
     isLoading.value = true
     error.value = null
     try {
-      const response = await ServiceProvider.get<UserService>('users').getPaginated({ limit, skip, q })
+      const response = await service().getPaginated({ limit, skip, q })
 
-      // Фільтруємо видалених та накладаємо локальні оновлення
       const apiUsers = response.users
         .filter((u: User) => !deletedUserIds.value.has(u.id))
         .map(applyLocalStateToUser)
@@ -45,18 +61,11 @@ export const useUsersStore = defineStore('users', () => {
           const full = `${u.firstName} ${u.lastName} ${u.username} ${u.email}`.toLowerCase()
           return full.includes(queryLower)
         })
-        .map(applyLocalStateToUser)
 
-      if (skip === 0 && matchingCreated.length > 0) {
-        users.value = [...matchingCreated, ...apiUsers].slice(0, limit)
-      } else {
-        users.value = apiUsers
-      }
-
-      const deletedCount = deletedUserIds.value.size
+      users.value = [...matchingCreated, ...apiUsers]
       total.value = Math.max(
         0,
-        response.total + matchingCreated.length - deletedCount,
+        response.total + matchingCreated.length - deletedUserIds.value.size,
       )
     } catch (e) {
       error.value = (e as Error).message || 'Не вдалося завантажити користувачів'
@@ -73,7 +82,7 @@ export const useUsersStore = defineStore('users', () => {
       if (localCreated) {
         return applyLocalStateToUser(localCreated)
       }
-      const apiUser = await ServiceProvider.get<UserService>('users').getById(id)
+      const apiUser = await service().getById(id)
       return applyLocalStateToUser(apiUser)
     } catch (e) {
       error.value = (e as Error).message || 'Не вдалося завантажити дані користувача'
@@ -87,7 +96,7 @@ export const useUsersStore = defineStore('users', () => {
     isLoading.value = true
     error.value = null
     try {
-      const created = await ServiceProvider.get<UserService>('users').create(dto)
+      const created = await service().create(dto)
       const newUser: User = {
         ...created,
         ...dto,
@@ -109,7 +118,6 @@ export const useUsersStore = defineStore('users', () => {
     isLoading.value = true
     error.value = null
     try {
-      // Якщо це локально створений юзер (якого немає на DummyJSON сервері), оновлюємо локально
       const localIndex = createdUsers.value.findIndex((u: User) => u.id === id)
       let updatedResponse: User
       if (localIndex !== -1) {
@@ -117,7 +125,7 @@ export const useUsersStore = defineStore('users', () => {
         updatedResponse = { ...existing, ...dto }
         createdUsers.value[localIndex] = updatedResponse
       } else {
-        const apiUpdated = await ServiceProvider.get<UserService>('users').update(id, dto)
+        const apiUpdated = await service().update(id, dto)
         updatedResponse = { ...apiUpdated, ...dto, id }
       }
 
@@ -140,13 +148,13 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-  async function deleteUser(id: number): Promise<void> {
+  async function removeUser(id: number): Promise<void> {
     isLoading.value = true
     error.value = null
     try {
       const isLocal = createdUsers.value.some((u: User) => u.id === id)
       if (!isLocal) {
-        await ServiceProvider.get<UserService>('users').delete(id)
+        await service().delete(id)
       }
       deletedUserIds.value.add(id)
       createdUsers.value = createdUsers.value.filter((u: User) => u.id !== id)
@@ -160,15 +168,19 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
+  const deleteUser = removeUser
+
   return {
     users,
     total,
     isLoading,
     error,
+    hasUsers,
     fetchUsers,
     getUserById,
     createUser,
     updateUser,
+    removeUser,
     deleteUser,
   }
 })

@@ -3,18 +3,21 @@ import { computed, onMounted } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import AuthLayout from './layouts/AuthLayout.vue'
 import DefaultLayout from './layouts/DefaultLayout.vue'
-import { useAuthStore } from '@/stores/auth.store'
+import { useSessionStore } from '@/entities/session'
+import { useThemeStore } from '@/entities/theme'
 
 const route = useRoute()
-const authStore = useAuthStore()
+const sessionStore = useSessionStore()
+const themeStore = useThemeStore()
 
 const currentLayout = computed(() => {
   return route.meta.layout === 'auth' ? AuthLayout : DefaultLayout
 })
 
 onMounted(() => {
-  if (authStore.isAuthenticated) {
-    authStore.fetchCurrentUser()
+  themeStore.initTheme()
+  if (sessionStore.isAuthenticated) {
+    sessionStore.fetchCurrentUser()
   }
 })
 </script>
