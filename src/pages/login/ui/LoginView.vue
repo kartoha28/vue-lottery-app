@@ -41,13 +41,14 @@ const handleSuccess = async (): Promise<void> => {
 }
 
 .login-card {
-  background-color: #ffffff;
-  border: 1px solid #dee2e6;
+  background-color: var(--card-bg, #ffffff);
+  border: 1px solid var(--card-border, #dee2e6);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   padding: 2.25rem;
   width: 100%;
   max-width: 440px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .login-header {
@@ -58,13 +59,13 @@ const handleSuccess = async (): Promise<void> => {
 .login-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #212529;
+  color: var(--text-primary, #212529);
   margin-bottom: 0.5rem;
 }
 
 .login-subtitle {
   font-size: 0.9rem;
-  color: #6c757d;
+  color: var(--text-muted, #6c757d);
   line-height: 1.4;
   margin: 0;
 }
@@ -72,47 +73,18 @@ const handleSuccess = async (): Promise<void> => {
 .back-link-wrapper {
   margin-top: 1.5rem;
   text-align: center;
-  border-top: 1px solid #f1f3f5;
+  border-top: 1px solid var(--border-color, #f1f3f5);
   padding-top: 1rem;
 }
 
 .back-link {
-  color: #6c757d;
+  color: var(--text-muted, #6c757d);
   font-size: 0.875rem;
   text-decoration: none;
 
   &:hover {
     color: #0d6efd;
     text-decoration: underline;
-  }
-}
-
-:global(html.app-dark-theme) {
-  .login-card {
-    background-color: #1e1e1e;
-    border-color: #2e2e2e;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    color: #e0e0e0;
-  }
-
-  .login-title {
-    color: #f8f9fa;
-  }
-
-  .login-subtitle {
-    color: #adb5bd;
-  }
-
-  .back-link-wrapper {
-    border-top-color: #2e2e2e;
-  }
-
-  .back-link {
-    color: #6ea8fe;
-
-    &:hover {
-      color: #9ec5fe;
-    }
   }
 }
 </style>

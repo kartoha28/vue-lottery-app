@@ -105,13 +105,15 @@ onUnmounted(() => {
 }
 
 .modal-content-custom {
-  background-color: #ffffff;
+  background-color: var(--card-bg, #ffffff);
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--card-border, #dee2e6);
+  color: var(--text-primary, #212529);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .modal-header-custom {
@@ -119,14 +121,14 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--border-color, #e9ecef);
 }
 
 .modal-title-custom {
   margin: 0;
   font-size: 1.15rem;
   font-weight: 600;
-  color: #212529;
+  color: var(--text-primary, #212529);
 }
 
 .btn-close-custom {
@@ -134,19 +136,19 @@ onUnmounted(() => {
   border: none;
   font-size: 1.5rem;
   line-height: 1;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   cursor: pointer;
   padding: 0;
 
   &:hover {
-    color: #212529;
+    color: var(--text-primary, #212529);
   }
 }
 
 .modal-body-custom {
   padding: 1.25rem;
   font-size: 0.95rem;
-  color: #495057;
+  color: var(--text-primary, #495057);
 }
 
 .modal-footer-custom {
@@ -155,8 +157,9 @@ onUnmounted(() => {
   justify-content: flex-end;
   gap: 0.75rem;
   padding: 0.85rem 1.25rem;
-  border-top: 1px solid #e9ecef;
-  background-color: #f8f9fa;
+  border-top: 1px solid var(--border-color, #e9ecef);
+  background-color: var(--surface-muted, #f8f9fa);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 /* Modal Vue transition */
@@ -175,40 +178,6 @@ onUnmounted(() => {
 
   .modal-dialog-custom {
     transform: scale(0.95);
-  }
-}
-
-:global(html.app-dark-theme) {
-  .modal-content-custom {
-    background-color: #1e1e1e;
-    border-color: #2e2e2e;
-    color: #e0e0e0;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  }
-
-  .modal-header-custom {
-    border-bottom-color: #2e2e2e;
-  }
-
-  .modal-title-custom {
-    color: #f8f9fa;
-  }
-
-  .btn-close-custom {
-    color: #adb5bd;
-
-    &:hover {
-      color: #f8f9fa;
-    }
-  }
-
-  .modal-body-custom {
-    color: #e0e0e0;
-  }
-
-  .modal-footer-custom {
-    background-color: #252525;
-    border-top-color: #2e2e2e;
   }
 }
 </style>

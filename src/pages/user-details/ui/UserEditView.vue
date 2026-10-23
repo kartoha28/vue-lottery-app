@@ -59,27 +59,17 @@ const handleCancel = async (): Promise<void> => {
 
 <style scoped lang="scss">
 .edit-user-panel {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
+  background-color: var(--surface-muted, #f8f9fa);
+  border: 1px solid var(--card-border, #dee2e6);
   border-radius: 8px;
   padding: 1.5rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .edit-title {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 1.25rem;
-  color: #212529;
-}
-
-:global(html.app-dark-theme) {
-  .edit-user-panel {
-    background-color: #252525;
-    border-color: #383838;
-  }
-
-  .edit-title {
-    color: #f8f9fa;
-  }
+  color: var(--text-primary, #212529);
 }
 </style>

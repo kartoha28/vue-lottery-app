@@ -23,9 +23,25 @@
 @import "bootstrap/scss/utilities";
 
 // Custom styles
+:root {
+  --app-bg: #f5f5f5;
+  --app-color: #333333;
+  --card-bg: #ffffff;
+  --card-border: #dee2e6;
+  --surface-muted: #f8f9fa;
+  --surface-border: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --text-muted: #6c757d;
+  --border-color: #ced4da;
+  --badge-bg: #e7f1ff;
+  --badge-color: #084298;
+  --badge-border: #b6d4fe;
+}
+
 body {
-  background-color: #f5f5f5;
-  color: #333333;
+  background-color: var(--app-bg, #f5f5f5);
+  color: var(--app-color, #333333);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   min-height: 100vh;
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -36,7 +52,7 @@ body {
 }
 
 .content-card {
-  background-color: #ffffff;
+  background-color: var(--card-bg, #ffffff);
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   padding: 2rem;
@@ -46,6 +62,19 @@ body {
 // Global Dark Theme Overrides
 html.app-dark-theme {
   color-scheme: dark;
+  --app-bg: #121212;
+  --app-color: #e0e0e0;
+  --card-bg: #1e1e1e;
+  --card-border: #2e2e2e;
+  --surface-muted: #252525;
+  --surface-border: #383838;
+  --text-primary: #f8f9fa;
+  --text-secondary: #adb5bd;
+  --text-muted: #adb5bd;
+  --border-color: #383838;
+  --badge-bg: #1a2a40;
+  --badge-color: #9ec5fe;
+  --badge-border: #2b4c7e;
 
   body {
     background-color: #121212;
@@ -262,5 +291,172 @@ html.app-dark-theme {
     color: #ff99a8;
     padding: 0.15rem 0.35rem;
     border-radius: 4px;
+  }
+
+  // Panels & Cards
+  .login-card {
+    background-color: #1e1e1e !important;
+    border-color: #2e2e2e !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .login-title {
+    color: #f8f9fa !important;
+  }
+
+  .login-subtitle {
+    color: #adb5bd !important;
+  }
+
+  .edit-user-panel {
+    background-color: #252525 !important;
+    border-color: #383838 !important;
+  }
+
+  .edit-title {
+    color: #f8f9fa !important;
+  }
+
+  // User Details
+  .info-item {
+    background-color: #252525 !important;
+    border-color: #383838 !important;
+  }
+
+  .info-label {
+    color: #adb5bd !important;
+  }
+
+  .info-value {
+    color: #f8f9fa !important;
+  }
+
+  .profile-header {
+    border-bottom-color: #2e2e2e !important;
+  }
+
+  .profile-name {
+    color: #f8f9fa !important;
+  }
+
+  // Lottery Winners
+  .winners-display {
+    background-color: #252525 !important;
+    border-color: #383838 !important;
+  }
+
+  .winners-placeholder {
+    color: #6c757d !important;
+  }
+
+  .winners-label {
+    color: #adb5bd !important;
+  }
+
+  // Search Bar
+  .search-icon {
+    background-color: #252525 !important;
+    border-color: #3e3e3e !important;
+    color: #adb5bd !important;
+  }
+
+  .search-input {
+    background-color: #252525 !important;
+    border-color: #3e3e3e !important;
+    color: #e0e0e0 !important;
+
+    &:focus {
+      border-color: #6ea8fe !important;
+      box-shadow: 0 0 0 0.2rem rgba(110, 168, 254, 0.25) !important;
+    }
+
+    &::placeholder {
+      color: #6c757d !important;
+    }
+  }
+
+  .clear-btn {
+    border-color: #383838 !important;
+    color: #adb5bd !important;
+
+    &:hover {
+      background-color: #333333 !important;
+      color: #ffffff !important;
+    }
+  }
+
+  // About View
+  .author-profile {
+    border-bottom-color: #2e2e2e !important;
+  }
+
+  .author-name {
+    color: #f8f9fa !important;
+  }
+
+  .author-role,
+  .author-links {
+    color: #adb5bd !important;
+  }
+
+  .github-link {
+    color: #6ea8fe !important;
+  }
+
+  .skills-title {
+    color: #e0e0e0 !important;
+  }
+
+  .skill-badge {
+    background-color: #1a2a40 !important;
+    color: #9ec5fe !important;
+    border-color: #2b4c7e !important;
+  }
+
+  // Custom Modal
+  .modal-content-custom {
+    background-color: #1e1e1e !important;
+    border-color: #2e2e2e !important;
+    color: #e0e0e0 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .modal-header-custom {
+    border-bottom-color: #2e2e2e !important;
+  }
+
+  .modal-title-custom {
+    color: #f8f9fa !important;
+  }
+
+  .btn-close-custom {
+    color: #adb5bd !important;
+
+    &:hover {
+      color: #f8f9fa !important;
+    }
+  }
+
+  .modal-body-custom {
+    color: #e0e0e0 !important;
+  }
+
+  .modal-footer-custom {
+    background-color: #252525 !important;
+    border-top-color: #2e2e2e !important;
+  }
+
+  // Table wrapper & Form footer
+  .app-table-wrapper {
+    background-color: #1e1e1e !important;
+  }
+
+  .form-footer {
+    border-top-color: #2e2e2e !important;
+  }
+
+  select.form-select option {
+    background-color: #252525 !important;
+    color: #e0e0e0 !important;
   }
 }

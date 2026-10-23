@@ -116,12 +116,13 @@ const fillDemo = (user: string, pass: string): void => {
 }
 
 .hint-label {
-  color: #6c757d;
+  color: var(--text-muted, #6c757d);
 }
 
 .demo-chip {
-  background: #e9ecef;
-  border: 1px solid #ced4da;
+  background: var(--surface-muted, #e9ecef);
+  border: 1px solid var(--border-color, #ced4da);
+  color: var(--text-primary, #212529);
   border-radius: 12px;
   padding: 0.2rem 0.6rem;
   font-size: 0.8rem;
@@ -129,29 +130,12 @@ const fillDemo = (user: string, pass: string): void => {
   transition: all 0.15s ease;
 
   &:hover {
-    background: #dee2e6;
+    background: var(--surface-border, #dee2e6);
     border-color: #adb5bd;
   }
 }
 
 .form-actions {
   margin-top: 1.5rem;
-}
-
-:global(html.app-dark-theme) {
-  .hint-label {
-    color: #adb5bd;
-  }
-
-  .demo-chip {
-    background-color: #2a2a2a;
-    border-color: #3e3e3e;
-    color: #e0e0e0;
-
-    &:hover {
-      background-color: #383838;
-      border-color: #4e4e4e;
-    }
-  }
 }
 </style>

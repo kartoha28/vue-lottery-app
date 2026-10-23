@@ -58,7 +58,7 @@ const skills = [
   gap: 1.25rem;
   padding-bottom: 1.5rem;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--border-color, #e9ecef);
 }
 
 .avatar-circle {
@@ -79,11 +79,11 @@ const skills = [
   font-size: 1.35rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
-  color: #212529;
+  color: var(--text-primary, #212529);
 }
 
 .author-role {
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   margin-bottom: 0.4rem;
   font-size: 0.95rem;
 }
@@ -91,7 +91,7 @@ const skills = [
 .author-links {
   margin: 0;
   font-size: 0.95rem;
-  color: #495057;
+  color: var(--text-secondary, #495057);
 }
 
 .github-link {
@@ -108,7 +108,7 @@ const skills = [
   font-size: 1.15rem;
   font-weight: 600;
   margin-bottom: 0.85rem;
-  color: #343a40;
+  color: var(--text-primary, #343a40);
 }
 
 .skills-badges {
@@ -118,45 +118,13 @@ const skills = [
 }
 
 .skill-badge {
-  background-color: #e7f1ff;
-  color: #084298;
-  border: 1px solid #b6d4fe;
+  background-color: var(--badge-bg, #e7f1ff);
+  color: var(--badge-color, #084298);
+  border: 1px solid var(--badge-border, #b6d4fe);
   padding: 0.4rem 0.85rem;
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 500;
   transition: all 0.2s ease;
-}
-
-:global(html.app-dark-theme) {
-  .about-view {
-    .page-title,
-    .author-name {
-      color: #f8f9fa;
-    }
-
-    .author-role,
-    .author-links {
-      color: #adb5bd;
-    }
-
-    .author-profile {
-      border-bottom-color: #2e2e2e;
-    }
-
-    .github-link {
-      color: #6ea8fe;
-    }
-
-    .skills-title {
-      color: #e0e0e0;
-    }
-
-    .skill-badge {
-      background-color: #1a2a40;
-      color: #9ec5fe;
-      border-color: #2b4c7e;
-    }
-  }
 }
 </style>

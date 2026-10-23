@@ -35,12 +35,8 @@ const { toggleTheme } = themeStore
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f1f5f9;
+  background-color: var(--app-bg, #f1f5f9);
   transition: background-color 0.2s ease;
-}
-
-:global(html.app-dark-theme) .auth-layout {
-  background-color: #121212;
 }
 
 .auth-top-bar {

@@ -228,6 +228,6 @@ const onSubmit = handleSubmit((values) => {
   gap: 0.75rem;
   margin-top: 0.75rem;
   padding-top: 1rem;
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid var(--border-color, #e9ecef);
 }
 </style>

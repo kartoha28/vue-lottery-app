@@ -53,12 +53,13 @@ const emit = defineEmits<{
 .winners-display {
   flex: 1;
   min-height: 44px;
-  background-color: #ffffff;
-  border: 1px solid #ced4da;
+  background-color: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #ced4da);
   border-radius: 4px;
   padding: 0.35rem 0.75rem;
   display: flex;
   align-items: center;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .badges-wrapper {
@@ -69,13 +70,13 @@ const emit = defineEmits<{
 }
 
 .winners-label {
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   font-size: 0.9rem;
   margin-left: 0.25rem;
 }
 
 .winners-placeholder {
-  color: #adb5bd;
+  color: var(--text-secondary, #adb5bd);
   font-size: 0.95rem;
 }
 
@@ -85,20 +86,5 @@ const emit = defineEmits<{
   border-color: #0d6efd;
   font-weight: 500;
   padding: 0.5rem 1.15rem;
-}
-
-:global(html.app-dark-theme) {
-  .winners-display {
-    background-color: #252525;
-    border-color: #383838;
-  }
-
-  .winners-placeholder {
-    color: #6c757d;
-  }
-
-  .winners-label {
-    color: #adb5bd;
-  }
 }
 </style>

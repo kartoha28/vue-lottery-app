@@ -70,7 +70,7 @@ const onInput = (event: Event): void => {
 .form-label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #343a40;
+  color: var(--text-primary, #343a40);
   margin-bottom: 0.4rem;
 }
 
@@ -88,26 +88,5 @@ const onInput = (event: Event): void => {
   color: #dc3545;
   font-size: 0.825rem;
   margin-top: 0.35rem;
-}
-
-:global(html.app-dark-theme) {
-  .form-label {
-    color: #e0e0e0;
-  }
-
-  .app-input-field {
-    background-color: #252525;
-    color: #e0e0e0;
-    border-color: #3e3e3e;
-
-    &:focus {
-      border-color: #6ea8fe;
-      box-shadow: 0 0 0 0.2rem rgba(110, 168, 254, 0.25);
-    }
-
-    &::placeholder {
-      color: #6c757d;
-    }
-  }
 }
 </style>

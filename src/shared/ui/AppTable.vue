@@ -74,8 +74,9 @@ const emit = defineEmits<{
 
 <style scoped lang="scss">
 .app-table-wrapper {
-  background: #ffffff;
+  background: var(--card-bg, #ffffff);
   border-radius: 6px;
   overflow: hidden;
+  transition: background-color 0.2s ease;
 }
 </style>

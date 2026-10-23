@@ -118,7 +118,7 @@ watch(
   flex-wrap: wrap;
   gap: 1.25rem;
   padding-bottom: 1.25rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--border-color, #e9ecef);
 }
 
 .profile-avatar {
@@ -146,64 +146,36 @@ watch(
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.2rem;
-  color: #212529;
+  color: var(--text-primary, #212529);
 }
 
 .profile-username {
   margin: 0;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
   font-size: 0.95rem;
 }
 
 .info-item {
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
+  background-color: var(--surface-muted, #f8f9fa);
+  border: 1px solid var(--card-border, #e9ecef);
   border-radius: 6px;
   padding: 0.75rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .info-label {
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
-  color: #6c757d;
+  color: var(--text-secondary, #6c757d);
 }
 
 .info-value {
   font-size: 0.95rem;
   font-weight: 500;
-  color: #212529;
-}
-
-:global(html.app-dark-theme) {
-  .user-details-view {
-    .profile-name {
-      color: #f8f9fa;
-    }
-
-    .profile-username {
-      color: #adb5bd;
-    }
-
-    .profile-header {
-      border-bottom-color: #2e2e2e;
-    }
-
-    .info-item {
-      background-color: #252525;
-      border-color: #383838;
-    }
-
-    .info-label {
-      color: #adb5bd;
-    }
-
-    .info-value {
-      color: #e0e0e0;
-    }
-  }
+  color: var(--text-primary, #212529);
 }
 </style>
