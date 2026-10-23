@@ -1,7 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { ServiceProvider } from '@/services/service-provider'
-import type { CreateUserDto, UpdateUserDto, User } from '@/types/user'
+import { ServiceProvider } from '@/shared/api'
+import type { UserService } from '@/entities/user'
+import type { CreateUserDto, UpdateUserDto, User } from '@/entities/user'
 
 export const useUsersStore = defineStore('users', () => {
   const users = ref<User[]>([])
@@ -29,17 +30,17 @@ export const useUsersStore = defineStore('users', () => {
     isLoading.value = true
     error.value = null
     try {
-      const response = await ServiceProvider.users.getPaginated({ limit, skip, q })
+      const response = await ServiceProvider.get<UserService>('users').getPaginated({ limit, skip, q })
 
       // Фільтруємо видалених та накладаємо локальні оновлення
       const apiUsers = response.users
-        .filter((u) => !deletedUserIds.value.has(u.id))
+        .filter((u: User) => !deletedUserIds.value.has(u.id))
         .map(applyLocalStateToUser)
 
       const queryLower = q.trim().toLowerCase()
       const matchingCreated = createdUsers.value
-        .filter((u) => !deletedUserIds.value.has(u.id))
-        .filter((u) => {
+        .filter((u: User) => !deletedUserIds.value.has(u.id))
+        .filter((u: User) => {
           if (!queryLower) return true
           const full = `${u.firstName} ${u.lastName} ${u.username} ${u.email}`.toLowerCase()
           return full.includes(queryLower)
@@ -68,11 +69,11 @@ export const useUsersStore = defineStore('users', () => {
     isLoading.value = true
     error.value = null
     try {
-      const localCreated = createdUsers.value.find((u) => u.id === id)
+      const localCreated = createdUsers.value.find((u: User) => u.id === id)
       if (localCreated) {
         return applyLocalStateToUser(localCreated)
       }
-      const apiUser = await ServiceProvider.users.getById(id)
+      const apiUser = await ServiceProvider.get<UserService>('users').getById(id)
       return applyLocalStateToUser(apiUser)
     } catch (e) {
       error.value = (e as Error).message || 'Не вдалося завантажити дані користувача'
@@ -86,7 +87,7 @@ export const useUsersStore = defineStore('users', () => {
     isLoading.value = true
     error.value = null
     try {
-      const created = await ServiceProvider.users.create(dto)
+      const created = await ServiceProvider.get<UserService>('users').create(dto)
       const newUser: User = {
         ...created,
         ...dto,
@@ -109,14 +110,14 @@ export const useUsersStore = defineStore('users', () => {
     error.value = null
     try {
       // Якщо це локально створений юзер (якого немає на DummyJSON сервері), оновлюємо локально
-      const localIndex = createdUsers.value.findIndex((u) => u.id === id)
+      const localIndex = createdUsers.value.findIndex((u: User) => u.id === id)
       let updatedResponse: User
       if (localIndex !== -1) {
         const existing = createdUsers.value[localIndex]!
         updatedResponse = { ...existing, ...dto }
         createdUsers.value[localIndex] = updatedResponse
       } else {
-        const apiUpdated = await ServiceProvider.users.update(id, dto)
+        const apiUpdated = await ServiceProvider.get<UserService>('users').update(id, dto)
         updatedResponse = { ...apiUpdated, ...dto, id }
       }
 
@@ -125,7 +126,7 @@ export const useUsersStore = defineStore('users', () => {
         ...dto,
       }
 
-      const listIdx = users.value.findIndex((u) => u.id === id)
+      const listIdx = users.value.findIndex((u: User) => u.id === id)
       if (listIdx !== -1) {
         users.value[listIdx] = { ...users.value[listIdx]!, ...dto }
       }
@@ -143,13 +144,13 @@ export const useUsersStore = defineStore('users', () => {
     isLoading.value = true
     error.value = null
     try {
-      const isLocal = createdUsers.value.some((u) => u.id === id)
+      const isLocal = createdUsers.value.some((u: User) => u.id === id)
       if (!isLocal) {
-        await ServiceProvider.users.delete(id)
+        await ServiceProvider.get<UserService>('users').delete(id)
       }
       deletedUserIds.value.add(id)
-      createdUsers.value = createdUsers.value.filter((u) => u.id !== id)
-      users.value = users.value.filter((u) => u.id !== id)
+      createdUsers.value = createdUsers.value.filter((u: User) => u.id !== id)
+      users.value = users.value.filter((u: User) => u.id !== id)
       total.value = Math.max(0, total.value - 1)
     } catch (e) {
       error.value = (e as Error).message || 'Помилка при видаленні користувача'

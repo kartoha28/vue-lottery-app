@@ -1,8 +1,9 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { TOKEN_STORAGE_KEYS } from '@/api/http-client'
-import { ServiceProvider } from '@/services/service-provider'
-import type { AuthUser, LoginCredentials } from '@/types/auth'
+import { TOKEN_STORAGE_KEYS } from '@/shared/api/http-client'
+import { ServiceProvider } from '@/shared/api'
+import type { AuthService } from '@/entities/session'
+import type { AuthUserResponse as AuthUser, LoginCredentials } from '@/entities/session'
 
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(
@@ -32,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLoading.value = true
     error.value = null
     try {
-      const response = await ServiceProvider.auth.login(credentials)
+      const response = await ServiceProvider.get<AuthService>('auth').login(credentials)
       accessToken.value = response.accessToken
       refreshToken.value = response.refreshToken
 
@@ -61,7 +62,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function fetchCurrentUser(): Promise<void> {
     if (!accessToken.value) return
     try {
-      const me = await ServiceProvider.auth.getMe()
+      const me = await ServiceProvider.get<AuthService>('auth').getMe()
       user.value = me
       localStorage.setItem(TOKEN_STORAGE_KEYS.AUTH_USER, JSON.stringify(me))
     } catch {
