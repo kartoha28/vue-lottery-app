@@ -16,6 +16,21 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        chunkFileNames: (chunkInfo) => {
+          const name = chunkInfo.name.replace(/^_+/, '')
+          return `assets/${name}-[hash].js`
+        },
+        assetFileNames: (assetInfo) => {
+          const rawName = assetInfo.name || 'asset'
+          const name = rawName.replace(/^_+/, '')
+          return `assets/${name}-[hash][extname]`
+        },
+      },
+    },
+  },
   css: {
     preprocessorOptions: {
       scss: {
