@@ -1,3 +1,8 @@
+/**
+ * Універсальний IoC-реєстр сервісів (патерн Service Locator / Registry) для FSD.
+ * Шар shared/api не імпортує конкретні сутності (entities/user, entities/session),
+ * забезпечуючи односпрямованість залежностей FSD.
+ */
 type Factory<T> = () => T
 
 export class ServiceProvider {
